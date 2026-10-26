@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff8f6" />
+    <title>오늘의 작은 목록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-[#fff8f6] px-4 py-8 text-slate-800 sm:px-6 sm:py-12">
+    <main class="mx-auto max-w-2xl">
+      <header class="mb-7 flex items-center justify-between gap-4">
+        <a class="flex items-center gap-3" href="./" aria-label="오늘의 작은 목록 홈">
+          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-rose-100 text-2xl" aria-hidden="true">🌷</span>
+          <span>
+            <span class="block text-xs font-semibold uppercase tracking-[0.18em] text-rose-400">A little at a time</span>
+            <span class="block text-lg font-bold tracking-tight text-slate-800">오늘의 작은 목록</span>
+          </span>
+        </a>
+        <time id="today-date" class="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-500 shadow-sm"></time>
+      </header>
+
+      <section class="overflow-hidden rounded-[2rem] bg-white shadow-[0_18px_60px_-28px_rgba(120,70,85,0.28)]">
+        <div class="bg-gradient-to-br from-rose-100 via-pink-50 to-orange-50 px-6 py-7 sm:px-9 sm:py-9">
+          <p class="mb-2 text-sm font-semibold text-rose-500">조금씩 해내는 오늘</p>
+          <h1 class="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl">오늘도 충분히 잘하고 있어요 <span aria-hidden="true">✨</span></h1>
+          <p class="mt-2 text-sm text-slate-500">작은 한 걸음도 소중하게 기록해요.</p>
+
+          <div class="mt-7 rounded-2xl bg-white/80 p-4 sm:p-5">
+            <div class="mb-3 flex items-center justify-between gap-3">
+              <span class="text-sm font-semibold text-slate-600">오늘의 진행률</span>
+              <span id="progress-label" class="text-sm font-bold text-rose-500">0%</span>
+            </div>
+            <div
+              id="progress-track"
+              class="h-2.5 overflow-hidden rounded-full bg-rose-100"
+              role="progressbar"
+              aria-label="오늘의 할 일 진행률"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div id="progress-bar" class="h-full w-0 rounded-full bg-gradient-to-r from-rose-400 to-orange-300 transition-[width] duration-500"></div>
+            </div>
+            <p id="progress-detail" class="mt-2 text-xs text-slate-400">아직 등록된 할 일이 없어요</p>
+          </div>
+        </div>
+
+        <div class="px-5 py-6 sm:px-9 sm:py-8">
+          <form id="todo-form" class="flex flex-col gap-3">
+            <label class="sr-only" for="todo-input">새 할 일</label>
+            <input
+              id="todo-input"
+              class="min-w-0 rounded-xl border border-rose-100 bg-rose-50/40 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-rose-300 focus:bg-white focus:ring-4 focus:ring-rose-100"
+              type="text"
+              maxlength="50"
+              placeholder="새로운 할 일을 적어보세요"
+              autocomplete="off"
+            />
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto]">
+              <label class="flex items-center gap-3 rounded-xl border border-rose-100 bg-white px-4 py-2 text-sm text-slate-500">
+                <span class="shrink-0 font-semibold">마감일</span>
+                <input id="deadline-input" class="min-w-0 flex-1 bg-transparent text-sm text-slate-600 outline-none" type="date" aria-label="마감일 (선택)" />
+              </label>
+              <div class="flex gap-3">
+                <label class="sr-only" for="importance-input">중요도</label>
+                <select
+                  id="importance-input"
+                  class="min-w-0 flex-1 rounded-xl border border-rose-100 bg-white px-3 py-3 text-sm text-slate-600 outline-none focus:border-rose-300 focus:ring-4 focus:ring-rose-100 sm:flex-none"
+                >
+                  <option value="high">중요도 높음</option>
+                  <option value="medium" selected>중요도 보통</option>
+                  <option value="low">중요도 낮음</option>
+                </select>
+                <button
+                  class="flex-1 rounded-xl bg-rose-400 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-200 active:scale-[0.98] sm:flex-none"
+                  type="submit"
+                >
+                  추가하기 <span aria-hidden="true">＋</span>
+                </button>
+              </div>
+            </div>
+          </form>
+          <p id="input-hint" class="mt-2 text-xs text-slate-400">최대 50자까지 입력할 수 있어요. 마감일은 선택 입력이에요.</p>
+          <p id="storage-message" class="mt-3 hidden rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800" role="alert"></p>
+          <p id="form-message" class="mt-2 hidden text-sm text-rose-600" role="alert"></p>
+
+          <div class="mt-7 flex flex-wrap items-center justify-between gap-3 border-b border-rose-50 pb-4">
+            <h2 class="text-sm font-bold text-slate-700">나의 할 일 <span id="todo-count" class="ml-1 font-medium text-slate-400">(0)</span></h2>
+            <div class="flex rounded-xl bg-rose-50 p-1" role="group" aria-label="할 일 필터">
+              <button class="filter-button rounded-lg px-3 py-2 text-xs font-semibold transition" type="button" data-filter="all" aria-pressed="true">전체</button>
+              <button class="filter-button rounded-lg px-3 py-2 text-xs font-semibold transition" type="button" data-filter="active" aria-pressed="false">진행 중</button>
+              <button class="filter-button rounded-lg px-3 py-2 text-xs font-semibold transition" type="button" data-filter="completed" aria-pressed="false">완료</button>
+            </div>
+          </div>
+
+          <div id="todo-list" class="mt-5 max-h-[28rem] space-y-6 overflow-y-auto pr-1" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <footer class="mt-5 text-center text-xs text-slate-400">나를 위한 속도로, 하나씩 🌼</footer>
+    </main>
+    <div id="flower-confetti" class="flower-confetti" aria-hidden="true"></div>
+  </body>
+</html>

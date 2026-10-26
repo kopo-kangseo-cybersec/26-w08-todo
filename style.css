@@ -1,0 +1,57 @@
+html {
+  color-scheme: light;
+}
+
+body {
+  font-family: ui-rounded, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+.filter-button {
+  color: #8b7b80;
+}
+
+.filter-button[aria-pressed="true"] {
+  background: white;
+  color: #e8798f;
+  box-shadow: 0 1px 3px rgb(120 70 85 / 12%);
+}
+
+.flower-confetti {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flower-particle {
+  position: absolute;
+  font-size: 1.25rem;
+  animation: flower-burst 850ms ease-out forwards;
+}
+
+@keyframes flower-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(-50% + var(--flower-x)),
+        calc(-50% + var(--flower-y))
+      )
+      scale(1) rotate(var(--flower-rotation));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flower-particle {
+    display: none;
+  }
+}
