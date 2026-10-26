@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="오늘 해야 할 일을 기록하고 진행 상황을 관리하는 To-Do 리스트"
+    />
+    <title>오늘의 할 일</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-[#f5f6f8] text-slate-800 antialiased">
+    <main class="mx-auto flex min-h-screen w-full max-w-3xl flex-col px-4 py-8 sm:px-6 sm:py-12">
+      <header class="mb-8">
+        <div class="mb-6 flex items-start justify-between gap-4">
+          <div>
+            <p class="mb-2 text-sm font-semibold tracking-wide text-indigo-600">MY DAILY LIST</p>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">오늘의 할 일</h1>
+            <p class="mt-2 text-sm text-slate-500">작은 한 걸음씩, 오늘을 완성해 보세요.</p>
+          </div>
+          <div class="rounded-2xl bg-white px-4 py-3 text-right shadow-sm ring-1 ring-slate-200/70">
+            <p class="text-xs font-medium text-slate-500">오늘의 진행률</p>
+            <p id="progress-label" class="mt-1 text-lg font-bold text-indigo-600">0/0 완료</p>
+          </div>
+        </div>
+        <div
+          class="h-2.5 overflow-hidden rounded-full bg-slate-200"
+          role="progressbar"
+          aria-label="전체 할 일 진행률"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div id="progress-bar" class="h-full rounded-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </header>
+
+      <section aria-label="카테고리 관리" class="mb-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200/70 sm:p-4">
+        <form id="category-form" class="flex flex-col gap-2 sm:flex-row">
+          <label class="sr-only" for="category-input">새 카테고리 이름</label>
+          <input
+            id="category-input"
+            type="text"
+            maxlength="30"
+            placeholder="카테고리 이름 (예: 업무, 개인)"
+            class="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100"
+          />
+          <button
+            type="submit"
+            class="min-h-11 rounded-xl border border-indigo-200 px-4 text-sm font-semibold text-indigo-600 transition hover:bg-indigo-50 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+          >
+            카테고리 추가
+          </button>
+        </form>
+        <div id="category-list" class="mt-3 flex flex-wrap gap-2" aria-live="polite"></div>
+        <p id="category-message" class="mt-2 hidden text-sm text-rose-600" role="alert"></p>
+      </section>
+
+      <section aria-label="할 일 추가" class="mb-7 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200/70 sm:p-4">
+        <form id="todo-form" class="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto_auto]">
+          <label class="sr-only" for="todo-input">새 할 일</label>
+          <input
+            id="todo-input"
+            name="todo"
+            type="text"
+            maxlength="1000"
+            placeholder="오늘 해야 할 일을 입력하세요"
+            autocomplete="off"
+            class="min-h-12 min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-base outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100"
+          />
+          <div class="flex flex-col justify-center gap-1">
+            <label class="px-1 text-xs font-medium text-slate-500" for="created-date">등록일</label>
+            <input
+              id="created-date"
+              name="createdDate"
+              type="date"
+              required
+              class="min-h-10 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100 sm:w-auto"
+            />
+          </div>
+          <div class="flex flex-col justify-center gap-1">
+            <label class="px-1 text-xs font-medium text-slate-500" for="todo-date">마감일 (선택)</label>
+            <input
+              id="todo-date"
+              name="dueDate"
+              type="date"
+              aria-label="마감일 (선택)"
+              class="min-h-10 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100 sm:w-auto"
+            />
+          </div>
+          <div class="flex flex-col justify-center gap-1">
+            <label class="px-1 text-xs font-medium text-slate-500" for="todo-category">카테고리</label>
+            <select
+              id="todo-category"
+              name="category"
+              class="min-h-10 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100 sm:w-auto"
+            ></select>
+          </div>
+          <button
+            type="submit"
+            class="min-h-12 rounded-xl bg-indigo-600 px-6 font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200 active:scale-[0.98]"
+          >
+            추가하기
+          </button>
+        </form>
+        <p id="form-message" class="mt-2 hidden px-1 text-sm text-rose-600" role="alert"></p>
+      </section>
+
+      <section class="flex min-h-0 flex-1 flex-col rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70" aria-label="할 일 목록">
+        <div
+          id="filter-tabs"
+          class="grid grid-cols-4 gap-1 border-b border-slate-100 p-2 sm:gap-2 sm:p-3"
+          role="tablist"
+          aria-label="할 일 필터"
+        >
+          <button type="button" class="filter-tab" role="tab" data-filter="all" aria-selected="true">전체</button>
+          <button type="button" class="filter-tab" role="tab" data-filter="completed" aria-selected="false">완료</button>
+          <button type="button" class="filter-tab" role="tab" data-filter="active" aria-selected="false">미완료</button>
+          <button type="button" class="filter-tab" role="tab" data-filter="pending" aria-selected="false">대기</button>
+        </div>
+        <div class="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 sm:px-5">
+          <p id="date-search-label" class="min-w-0 text-sm text-slate-500" aria-live="polite"></p>
+          <div class="flex shrink-0 items-center gap-2">
+            <button id="calendar-clear" type="button" class="hidden min-h-10 rounded-lg px-3 text-xs font-semibold text-slate-500 hover:bg-slate-100">전체 보기</button>
+            <button id="calendar-expand" type="button" class="calendar-expand" aria-label="날짜 검색 달력 열기" aria-expanded="false">
+              <span>날짜 검색</span><span aria-hidden="true">❯</span>
+            </button>
+          </div>
+        </div>
+        <div id="todo-list" class="min-h-72 flex-1 overflow-y-auto px-3 py-2 sm:px-5" aria-live="polite"></div>
+        <footer class="flex items-center justify-between border-t border-slate-100 px-4 py-3 text-xs text-slate-500 sm:px-5">
+          <span id="remaining-count">남은 할 일 0개</span>
+          <span>이 브라우저에 자동 저장됩니다</span>
+        </footer>
+      </section>
+    </main>
+    <div id="calendar-backdrop" class="calendar-backdrop" aria-hidden="true"></div>
+    <aside id="calendar-drawer" class="calendar-drawer" aria-label="월간 일정 달력" aria-hidden="true">
+      <header class="mb-5 flex items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold tracking-wide text-indigo-600">MY SCHEDULE</p>
+          <h2 class="mt-1 text-2xl font-bold text-slate-900">월간 일정</h2>
+        </div>
+        <button id="calendar-close" type="button" class="calendar-close" aria-label="큰 달력 닫기">❯</button>
+      </header>
+      <div class="mb-4 flex items-center justify-between gap-2">
+        <button id="large-calendar-previous" type="button" class="calendar-nav" aria-label="이전 달">‹</button>
+        <h3 id="large-calendar-month" class="text-lg font-semibold text-slate-800" aria-live="polite"></h3>
+        <div class="flex items-center gap-2">
+          <button id="large-calendar-all" type="button" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100">전체 날짜</button>
+          <button id="large-calendar-today" type="button" class="rounded-lg px-3 py-2 text-xs font-semibold text-indigo-600 hover:bg-indigo-50">오늘</button>
+          <button id="large-calendar-next" type="button" class="calendar-nav" aria-label="다음 달">›</button>
+        </div>
+      </div>
+      <div class="mb-3 flex flex-wrap gap-3 text-xs text-slate-500">
+        <span class="flex items-center gap-1.5"><span class="calendar-dot bg-indigo-500"></span>등록일</span>
+        <span class="flex items-center gap-1.5"><span class="calendar-dot bg-amber-500"></span>마감일</span>
+      </div>
+      <div id="large-date-calendar" class="large-calendar-grid" aria-label="월간 등록일 및 마감일 일정"></div>
+    </aside>
+    <div id="confetti-stage" class="confetti-stage" aria-hidden="true"></div>
+  </body>
+</html>
