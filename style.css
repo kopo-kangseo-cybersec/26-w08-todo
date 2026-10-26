@@ -1,0 +1,136 @@
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 0.25rem;
+}
+
+.todo-check {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  accent-color: #4f46e5;
+  cursor: pointer;
+}
+
+.todo-item-content {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.todo-item-label {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.todo-item-label.is-completed {
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.todo-due-date {
+  display: block;
+  margin-top: 0.25rem;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.todo-delete {
+  flex: 0 0 auto;
+  border-radius: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  color: #e11d48;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 150ms ease;
+}
+
+.todo-delete:hover {
+  background-color: #fff1f2;
+}
+
+.filter-button-active {
+  background-color: white;
+  color: #4338ca;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 12%);
+}
+
+.confirmation-overlay {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgb(31 29 37 / 55%);
+}
+
+.confirmation-overlay[hidden] {
+  display: none;
+}
+
+.confirmation-card {
+  width: min(100%, 26rem);
+  padding: 2rem;
+  border: 1px solid #e8d8b4;
+  border-radius: 1.25rem;
+  background: #fffdf8;
+  box-shadow: 0 1.5rem 4rem rgb(24 20 16 / 22%);
+  text-align: center;
+  animation: dialog-appear 160ms ease-out;
+}
+
+.despair-icon {
+  width: 7rem;
+  height: 7rem;
+  margin-bottom: 0.75rem;
+}
+
+.completion-confetti {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -1rem;
+  left: var(--x);
+  width: 0.6rem;
+  height: 0.9rem;
+  border-radius: 2px;
+  animation: confetti-fall 1.8s var(--delay) ease-in forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin));
+    opacity: 0.2;
+  }
+}
+
+@keyframes dialog-appear {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
