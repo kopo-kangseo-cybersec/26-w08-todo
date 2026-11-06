@@ -1,0 +1,54 @@
+body {
+    font-family: 'Pretendard', sans-serif;
+}
+
+#todo-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#todo-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.todo-item {
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.todo-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgb(15 23 42 / 6%);
+}
+
+.todo-item--entering,
+.empty-state {
+    animation: todo-enter 220ms ease-out both;
+}
+
+.todo-text {
+    transition: color 180ms ease;
+}
+
+@keyframes todo-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .todo-item,
+    .todo-text {
+        transition: none !important;
+    }
+
+    .todo-item--entering,
+    .empty-state {
+        animation: none;
+    }
+}
