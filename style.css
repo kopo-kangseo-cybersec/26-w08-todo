@@ -1,0 +1,438 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(99 102 241 / 8%), transparent 34rem),
+    #f8fafc;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #334155;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field-control {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid #dbe2ee;
+  border-radius: 0.75rem;
+  background-color: #fff;
+  padding: 0.625rem 0.8rem;
+  color: #0f172a;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field-control:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 13%);
+}
+
+.field-control::placeholder {
+  color: #94a3b8;
+}
+
+.field-hint {
+  display: flex;
+  margin-top: 0.3rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.due-date-panel {
+  border: 1px solid #c7d2fe;
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, #eef2ff, #fff 78%);
+  padding: 1rem;
+}
+
+.due-date-label {
+  color: #3730a3;
+  font-size: 0.95rem;
+}
+
+.due-date-control {
+  border-color: #a5b4fc;
+  background-color: rgb(255 255 255 / 90%);
+}
+
+.due-date-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 16%);
+}
+
+.due-date-hint {
+  margin: 0.5rem 0 0;
+  color: #6366f1;
+  font-size: 0.78rem;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.primary-button {
+  border: 1px solid #4f46e5;
+  background: #4f46e5;
+  color: #fff;
+}
+
+.primary-button:hover {
+  border-color: #4338ca;
+  background: #4338ca;
+}
+
+.secondary-button {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #475569;
+}
+
+.secondary-button:hover {
+  background: #f8fafc;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.filter-button:hover:not(.active) {
+  color: #334155;
+}
+
+.filter-button.active {
+  background: #fff;
+  color: #4338ca;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 12%);
+}
+
+.tab-count {
+  display: inline-flex;
+  min-width: 1.35rem;
+  justify-content: center;
+  border-radius: 999px;
+  background: #e2e8f0;
+  padding: 0.05rem 0.3rem;
+  color: #64748b;
+  font-size: 0.7rem;
+}
+
+.filter-button.active .tab-count {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.todo-card {
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.todo-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.todo-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.2rem;
+  accent-color: #4f46e5;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.todo-title {
+  overflow-wrap: anywhere;
+}
+
+.todo-description {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.todo-completed {
+  opacity: 0.6;
+}
+
+.todo-completed .todo-title {
+  text-decoration: line-through;
+}
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.priority-high {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.priority-low {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.todo-action {
+  border: 1px solid #c7d2fe;
+  border-radius: 0.6rem;
+  background: #fff;
+  padding: 0.4rem 0.65rem;
+  color: #4338ca;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.todo-action:hover {
+  background: #eef2ff;
+}
+
+.todo-action-danger {
+  border-color: #fecdd3;
+  color: #be123c;
+}
+
+.todo-action-danger:hover {
+  background: #fff1f2;
+}
+
+.todo-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.empty-state {
+  border: 1px dashed #cbd5e1;
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 70%);
+  padding: 3rem 1.5rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.empty-state::before {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #818cf8;
+  content: "✓";
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.status-message {
+  margin-bottom: 1rem;
+  border: 1px solid;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.status-success {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status-error {
+  border-color: #fecdd3;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.delete-dialog {
+  width: min(27rem, calc(100% - 2rem));
+  max-width: none;
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  overflow: visible;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #0f172a;
+}
+
+.delete-dialog::backdrop {
+  background: rgb(15 23 42 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.delete-dialog[open] {
+  animation: dialog-appear 160ms ease-out both;
+}
+
+.delete-dialog-card {
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 1.4rem;
+  background: #fff;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 24px 70px rgb(15 23 42 / 25%);
+}
+
+.despair-icon {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0 auto 1rem;
+  filter: drop-shadow(0 8px 12px rgb(161 98 7 / 18%));
+}
+
+.despair-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.delete-dialog-eyebrow {
+  margin-bottom: 0.35rem;
+  color: #a16207;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.delete-dialog-title {
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.delete-dialog-copy {
+  margin-bottom: 1.5rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.delete-todo-title {
+  color: #334155;
+  font-weight: 600;
+}
+
+.delete-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.delete-confirm-button {
+  min-height: 2.75rem;
+  border: 1px solid #be123c;
+  border-radius: 0.75rem;
+  background: #be123c;
+  padding: 0.65rem 1.1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 150ms ease;
+}
+
+.delete-confirm-button:hover {
+  background: #9f1239;
+}
+
+.confetti-layer {
+  position: fixed;
+  z-index: 1000;
+  overflow: hidden;
+  pointer-events: none;
+  inset: 0;
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 0.42rem;
+  height: 0.62rem;
+  border-radius: 2px;
+  animation: confetti-burst 850ms cubic-bezier(0.15, 0.7, 0.25, 1) both;
+}
+
+.confetti-gold {
+  background: #eab308;
+}
+
+.confetti-rose {
+  background: #fb7185;
+}
+
+.confetti-indigo {
+  background: #818cf8;
+}
+
+.confetti-mint {
+  background: #34d399;
+}
+
+.confetti-sky {
+  background: #38bdf8;
+}
+
+@keyframes dialog-appear {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--spin));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delete-dialog[open] {
+    animation-duration: 1ms;
+  }
+}

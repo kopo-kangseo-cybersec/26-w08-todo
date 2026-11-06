@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8fafc">
+    <title>투두리스트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+      <header class="mb-7">
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">YOUR DAY, IN FOCUS</p>
+        <h1 class="mb-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">투두리스트</h1>
+        <p class="text-sm text-slate-500 sm:text-base">작은 할 일을 하나씩 완료해 보세요.</p>
+      </header>
+
+      <section id="progress-section" class="mb-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" aria-labelledby="progress-heading">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <h2 id="progress-heading" class="text-sm font-semibold text-slate-800">전체 진행률</h2>
+          <span id="progress-label" class="text-sm font-semibold text-indigo-600">0% (0/0 완료)</span>
+        </div>
+        <div
+          class="progress h-2 overflow-hidden rounded-full bg-slate-100"
+          role="progressbar"
+          aria-label="전체 할 일 진행률"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0">
+          <div id="progress-bar" class="progress-fill h-full rounded-full bg-indigo-600 transition-[width] duration-300" style="width: 0%"></div>
+        </div>
+      </section>
+
+      <div id="status-message" class="status-message hidden" role="status" aria-live="polite"></div>
+
+      <section class="mb-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6" aria-labelledby="form-heading">
+        <h2 id="form-heading" class="mb-5 text-lg font-bold text-slate-900">새 할 일</h2>
+        <form id="todo-form" novalidate>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label for="todo-title" class="field-label">할 일 제목 <span class="text-rose-600">*</span></label>
+              <input
+                id="todo-title"
+                name="title"
+                class="field-control"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                placeholder="예: 프로젝트 기획서 작성"
+                aria-describedby="title-count"
+                required>
+              <div id="title-count" class="field-hint justify-end">0 / 100</div>
+            </div>
+            <div>
+              <label for="todo-category" class="field-label">카테고리</label>
+              <input
+                id="todo-category"
+                name="category"
+                class="field-control"
+                type="text"
+                value="일반"
+                placeholder="예: 업무, 공부">
+            </div>
+            <div>
+              <label for="todo-priority" class="field-label">우선순위</label>
+              <select id="todo-priority" name="priority" class="field-control">
+                <option value="HIGH">높음</option>
+                <option value="MEDIUM" selected>보통</option>
+                <option value="LOW">낮음</option>
+              </select>
+            </div>
+            <div class="due-date-panel sm:col-span-2">
+              <label for="todo-due-date" class="field-label due-date-label">마감 일시</label>
+              <input id="todo-due-date" name="dueDate" class="field-control due-date-control" type="datetime-local">
+              <p class="due-date-hint">언제까지 끝낼지 정해두면 할 일 목록과 오늘 일정에 표시됩니다.</p>
+            </div>
+          </div>
+
+          <details class="todo-details mt-5 border-t border-slate-100 pt-4">
+            <summary class="cursor-pointer select-none text-sm font-semibold text-slate-600 hover:text-indigo-600">
+              상세 설명 및 시작 일시
+            </summary>
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="todo-description" class="field-label">상세 설명</label>
+                <textarea
+                  id="todo-description"
+                  name="description"
+                  class="field-control min-h-24 resize-y"
+                  rows="3"
+                  maxlength="500"
+                  aria-describedby="description-count"
+                  placeholder="할 일에 대한 메모를 입력하세요."></textarea>
+                <div id="description-count" class="field-hint justify-end">0 / 500</div>
+              </div>
+              <div>
+                <label for="todo-start-date" class="field-label">시작 일시</label>
+                <input id="todo-start-date" name="startDate" class="field-control" type="datetime-local">
+              </div>
+            </div>
+          </details>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            <button id="submit-button" class="primary-button" type="submit">할 일 추가</button>
+            <button id="cancel-edit" class="secondary-button hidden" type="button">수정 취소</button>
+          </div>
+        </form>
+      </section>
+
+      <section aria-label="할 일 목록">
+        <div id="list-controls" class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <nav class="overflow-x-auto" aria-label="할 일 필터">
+            <div id="filter-tabs" class="flex w-max gap-1 rounded-xl bg-slate-100 p-1" role="group" aria-label="할 일 필터">
+              <button class="filter-button active" id="tab-all" type="button" aria-pressed="true" data-filter="all">
+                전체 <span class="tab-count" data-count="all">0</span>
+              </button>
+              <button class="filter-button" id="tab-today" type="button" aria-pressed="false" data-filter="today">
+                오늘 할 일 <span class="tab-count" data-count="today">0</span>
+              </button>
+              <button class="filter-button" id="tab-completed" type="button" aria-pressed="false" data-filter="completed">
+                완료 목록 <span class="tab-count" data-count="completed">0</span>
+              </button>
+            </div>
+          </nav>
+          <div class="flex items-center gap-2">
+            <label for="sort-order" class="text-sm font-medium text-slate-500">정렬</label>
+            <select id="sort-order" class="field-control w-36 py-2" aria-label="할 일 정렬 기준">
+              <option value="created">생성순</option>
+              <option value="dueDate">마감일순</option>
+              <option value="priority">우선순위순</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="list-summary" class="mb-3 text-sm text-slate-500" aria-live="polite"></p>
+        <div id="todo-list" class="grid gap-3"></div>
+        <div id="empty-state" class="empty-state hidden"></div>
+      </section>
+    </main>
+
+    <dialog
+      id="delete-dialog"
+      class="delete-dialog"
+      aria-labelledby="delete-dialog-heading"
+      aria-describedby="delete-dialog-description">
+      <div class="delete-dialog-card">
+        <div class="despair-icon" aria-hidden="true">
+          <svg viewBox="0 0 96 96" role="presentation">
+            <circle cx="48" cy="48" r="46" fill="#f7e7a6"></circle>
+            <path d="M11 39 20 15l18 8L50 7l14 18 22-4-3 25 8 16-21 9-8 17-19-10-18 9-8-20-18-9 10-18Z" fill="#d7a936"></path>
+            <path d="m20 17 14 8-8 12-14-2Zm31-7 11 16-13 8-10-10Zm30 12-3 18-15-2 1-15ZM16 58l13-9 8 14-10 9Zm60 10-14-7 7-15 12 9ZM49 84l-2-17 16-1 6 14-12 7Z" fill="#f9f0cf"></path>
+            <path d="M29 43c5-7 12-10 19-10s14 3 19 10l-3 22c-3 12-10 18-16 18S35 77 32 65l-3-22Z" fill="#f1cf9a" stroke="#76502b" stroke-width="2"></path>
+            <path d="m34 47 10 2m8 0 10-2m-18 4-2 8 5 2m-7 9c5-3 11-3 16 0" fill="none" stroke="#563b32" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+            <path d="M28 42c2-11 11-18 20-18s18 7 20 18l-9-5-9 4-10-5-12 6Zm4 24c-8-5-11-15-8-24l7 5Zm33-19 7-5c3 10 0 19-7 24Z" fill="#382f34"></path>
+            <path d="m36 53 3 2m18-2-3 2m-16 13c5-3 10-3 15 0" fill="none" stroke="#fff6d9" stroke-linecap="round" stroke-width="2"></path>
+            <circle cx="17" cy="43" r="2" fill="#fff1b9"></circle>
+            <circle cx="77" cy="31" r="2" fill="#fff1b9"></circle>
+            <circle cx="73" cy="75" r="2" fill="#fff1b9"></circle>
+          </svg>
+        </div>
+        <p class="delete-dialog-eyebrow">잠시만요</p>
+        <h2 id="delete-dialog-heading" class="delete-dialog-title">이 할 일을 삭제할까요?</h2>
+        <p id="delete-dialog-description" class="delete-dialog-copy">
+          <span id="delete-todo-title" class="delete-todo-title"></span> 항목을 삭제하면 되돌릴 수 없습니다.
+        </p>
+        <div class="delete-dialog-actions">
+          <button id="cancel-delete" class="secondary-button" type="button">취소</button>
+          <button id="confirm-delete" class="delete-confirm-button" type="button">삭제하기</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+  </body>
+</html>
