@@ -69,6 +69,10 @@ jobs:
         run: |
           PR_NUMBER="${{ env.PR_NUMBER }}"
           
+          # 필수 라벨 미존재 시 자동 생성
+          gh label create "통과" --color "0e8a16" --description "과제 자동 채점 통과" 2>/dev/null || true
+          gh label create "보완 필요" --color "d93f0b" --description "과제 보완 필요 (재제출 요망)" 2>/dev/null || true
+
           # 1. 평가 코멘트 등록
           gh pr comment "$PR_NUMBER" --body-file result_comment.txt
           
